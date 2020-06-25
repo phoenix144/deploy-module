@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+########################################################################################
+# TYPE: Pattern file for deploy-module
+# NAME: template.deploy
+# DESC: This snipplet contains 3 arrays, holding information about targets, files and
+#       an optional set of post-deploy commands, to be ran on the remote machine(s).
+########################################################################################
+
+
+# Array of deploy targets, enter as <user>@<machine>, where machine can be an IP or FQDN
+userlist=(
+"root@example.org"
+"root@192.168.0.100"  )
+
+# List of files or folders to deploy, make sure to enter a relative path without leading /
+filelist=(
+"path/to/file" 
+"path/to/folder" )
+
+# Post deployment commands, e.g. to restart a service. 'none' for no execution
+postcmd=(
+"'/usr/sbin/service <server> restart'" )
