@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+########################################################################################
+# TYPE: Pattern file for deploy-module
+# NAME: bash
+# DESC: Configuration for bash sessions, including .profile
+########################################################################################
+
+# Holds deploy targets, enter as <user>@<machine>, where machine can be an IP or FQDN
+userlist=(
+"root@asus.ellnet.at"
+"ferdinand@asus.ellnet.at"
+"ferdinand@backup.ellnet.at"
+"remote-backup@backup.ellnet.at"
+"root@computer.ellnet.at"
+"ferdinand@computer.ellnet.at"
+"root@server.ellnet.at"
+"ferdinand@server.ellnet.at"
+"root@sanitaeter.at"
+"administrator@cloud.roteskreuz-kufstein.at"
+"root@bvrd.at"  )
+
+# List of files or folders to deploy, make sure to enter a relative path without leading /
+filelist=(
+"home/.bashrc" 
+"home/.profile"
+"home/.nanorc"
+"home/.bash_aliases" )
+
+# Post deployment commands, e.g. restart a service. 'none' for no execution
+postcmd=(
+"'none'" )
