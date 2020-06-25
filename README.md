@@ -14,14 +14,14 @@ snipplet, that is sourced by the deployment script. For details see the `templat
 
 For example, if you want to create a module for an apache webserver, the module folder could look like this:
 
-<apache-server.example.org>
-|
-|- etc
-   |- apache2
-      |- sites-availible
-      |- sites-enabled
-      |- apache2.conf
-      |- envars
-|- apache2.pattern
+<apache-server.example.org>  
+|  
+|- etc  
+   |- apache2  
+      |- sites-availible  
+      |- sites-enabled  
+      |- apache2.conf  
+      |- envars  
+|- apache2.pattern  
 
 
