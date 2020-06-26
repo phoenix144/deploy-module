@@ -40,4 +40,4 @@ After you finished editing your config, just simply deploy it by running ´deplo
 - [x] Hardening: simple error handling 
 - [ ] feature: set additional rsync and ssh options via pattern file
 - [ ] feature: add pre-commands
-
+- [ ] feature: Placeholders, to deploy different versions on multiple machines.
