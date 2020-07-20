@@ -70,12 +70,41 @@ trap_exit() {
     cd "$CWD"
 }
 
+# Parse target for rdiff call
+#
+parse_target() {
+    # trim trailing slashes
+    target=$(echo "$1" | sed 's:/*$::')
+    
+    # check if directory and remove folder name
+    if [ -d "$target" ]; then
+        target="${target%/*}"
+    fi
+
+    # check if home dir
+    if [ "${target%%/*}" == "home" ]; then
+        target="~/""${target##*/}"
+    else
+    # if absolute path, add leading slash
+        target="/""$target"
+    fi
+}
+
 
 # Main control flow
 #
 #
 trap error_handler ERR
 trap trap_exit EXIT
+
+# Initialize arrays and include pattern file to fill them
+declare -a userlist
+declare -a filelist
+declare -a postcmd
+declare target
+
+source "$1"
+cd "$(dirname "$1")"
 
 # Check arguments and pattern file.
 if help_wanted "$@"; then
@@ -87,11 +116,6 @@ if ! [ -f "$1" ]; then
 fi;
 
 
-# Include pattern file
-source "$1"
-
-cd "$(dirname "$1")"
-
 # Deployment process:
 # Loop through targets
 for user in "${userlist[@]}"; do
@@ -99,14 +123,8 @@ for user in "${userlist[@]}"; do
 
     # File deployment
     for file in "${filelist[@]}"; do
-        # Use different rsync calls for home directories vs. global paths
-        if [ "${file%%/*}" == "home" ]; then
-            rsync -zr -e ssh "${file}" "${user}":~/"${file##*/}"
-            echo -e "[Deploying] /home/${user%@*}/${file}"
-        else
-            rsync -zr -e ssh "${file}" "${user}":/"${file}"
-            echo -e "[Deploying] /${file}"
-        fi
+        parse_target "$file"
+        echo rsync -zr -e ssh "${file}" "${user}":"$target"
     done
 
     # Post deployment commands

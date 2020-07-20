@@ -1,0 +1,3 @@
+# Set Escape command to C-b, to avoid conflicts with byobu and emacs
+escape ^Bb
+
