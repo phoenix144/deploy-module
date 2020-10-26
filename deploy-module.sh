@@ -75,15 +75,18 @@ trap_exit() {
 parse_target() {
     # trim trailing slashes
     target=$(echo "$1" | sed 's:/*$::')
-    
+    current_user=${2%@*}
     # check if directory and remove folder name
     if [ -d "$target" ]; then
-        target="${target%/*}"
+        target="${target%/*}/"
     fi
 
     # check if home dir
     if [ "${target%%/*}" == "home" ]; then
-        target="~/""${target##*/}"
+        target="/${current_user}/""${target#*/}"
+        if [ "${current_user}" != "root" ]; then
+            target="/home""${target}"
+        fi
     else
     # if absolute path, add leading slash
         target="/""$target"
@@ -123,8 +126,9 @@ for user in "${userlist[@]}"; do
 
     # File deployment
     for file in "${filelist[@]}"; do
-        parse_target "$file"
-        echo rsync -zr -e ssh "${file}" "${user}":"$target"
+        parse_target "$file" "$user"
+        echo "[Deploying] ${file} to ${target}"
+        rsync -zr -e ssh "${file}" "${user}":"$target"
     done
 
     # Post deployment commands

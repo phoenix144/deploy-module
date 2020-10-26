@@ -1,6 +1,8 @@
 # Some useful aliases.
-alias texclean='rm -f *.toc *.aux *.log *.cp *.fn *.tp *.vr *.pg *.ky'
 alias uncmt="grep -Ev '^(#|$|;)'"
+alias logwatch='watch -n 1 tail -n 35'
+
+alias texclean='rm -f *.toc *.aux *.log *.cp *.fn *.tp *.vr *.pg *.ky'
 alias pgcc='gcc -Wall -Werror -std=c99'
 alias oc='sudo -u www-data /var/www/owncloud/occ'
 
