@@ -103,6 +103,7 @@ trap trap_exit EXIT
 # Initialize arrays and include pattern file to fill them
 declare -a userlist
 declare -a filelist
+declare -a precmd
 declare -a postcmd
 declare target
 
@@ -123,12 +124,20 @@ fi;
 # Loop through targets
 for user in "${userlist[@]}"; do
     echo -e "${GREEN}=== Connecting to ${BLUE} ${user#*@} ${GREEN} as user ${BLUE}${user%@*} ${GREEN}===${NOCOL}"
+    
+    # Pre deployment commands
+    if [ "${pretcmd[0]}" != "'none'" ]; then
+        for pre_cmd in "${precmd[@]}"; do
+            echo -e "[Executing] ${pre_cmd}"
+            ssh -q "${user}" "${pre_cmd}"
+        done
+    fi
 
     # File deployment
     for file in "${filelist[@]}"; do
         parse_target "$file" "$user"
         echo "[Deploying] ${file} to ${target}"
-        rsync -zr -e ssh "${file}" "${user}":"$target"
+        rsync -zlr -e ssh "${file}" "${user}":"$target"
     done
 
     # Post deployment commands
